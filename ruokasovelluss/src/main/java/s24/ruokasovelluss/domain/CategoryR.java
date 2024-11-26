@@ -2,6 +2,6 @@ package s24.ruokasovelluss.domain;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface CategoryRepository extends CrudRepository<Category, Long> {
+public interface CategoryR extends CrudRepository<Category, Long> {
     Category findByName(String name);
 }

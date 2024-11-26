@@ -1,38 +1,38 @@
 package s24.ruokasovelluss.domain;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-    @Entity
+import java.util.List;
+
+@Entity
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long categoryId;
+    private Long id;
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
-    @JsonIgnoreProperties("category")
+    @OneToMany(mappedBy = "category")
     private List<Recipe> recipes;
 
     public Category() {
-
     }
 
     public Category(String name) {
         this.name = name;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -43,8 +43,11 @@ public class Category {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Category: " + this.name;
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
     }
 }

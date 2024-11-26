@@ -1,7 +1,7 @@
 package s24.ruokasovelluss.web;
 
 import java.util.List;
-import java.util.Locale.Category;
+import s24.ruokasovelluss.domain.Category;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +18,18 @@ import s24.ruokasovelluss.domain.CategoryR;
 @Controller
 public class CategoryController {
 @Autowired
-    private CategoryR categoryRepository;
+    private CategoryR categoryR;
 
     @GetMapping("/categorylist")
     public String getListOfCategories(Model model) {
-        List<Category> listOfCategories = (List<Category>) categoryRepository.findAll();
+        List<Category> listOfCategories = (List<Category>) categoryR.findAll();
         model.addAttribute("categories", listOfCategories);
         return "categorylist";
     };
 
     @GetMapping("/category/{id}")
     public String getMethodName(@PathVariable("id") Long id, Model model) {
-        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        Optional<Category> optionalCategory = categoryR.findById(id);
         if (!optionalCategory.isPresent()) {
             throw new Error("Category not found");
         }
@@ -48,21 +48,21 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/savecategory")
     public String postCategory(Category category) {
-        categoryRepository.save(category);
+        categoryR.save(category);
         return "redirect:/categorylist";
     }
 
     @GetMapping("/deletecategory/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String getDeleteCategory(@PathVariable Long id) {
-        categoryRepository.deleteById(id);
+        categoryR.deleteById(id);
         return "redirect:/categorylist";
     }
 
     @GetMapping("/editcategory/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String getEditCategory(@PathVariable Long id, Model model) {
-        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        Optional<Category> optionalCategory = categoryR.findById(id);
         if (!optionalCategory.isPresent()) {
             throw new Error("Category not found");
         }

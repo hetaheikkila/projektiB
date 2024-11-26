@@ -1,34 +1,23 @@
 package s24.ruokasovelluss.domain;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity(name = "users")
+@Entity
 public class User {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true)
     private String username;
-
-    @Column(name = "password", nullable = false)
-    private String passwordHash;
-
-    @Column(name = "role", nullable = false)
+    private String passwordHash; // Ensure this is properly populated in your database
     private String role;
 
-    public User() {
-
-    }
+    public User() {}
 
     public User(String username, String passwordHash, String role) {
-        super();
         this.username = username;
         this.passwordHash = passwordHash;
         this.role = role;
@@ -36,10 +25,6 @@ public class User {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -64,5 +49,5 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
-    };
+    }
 }
