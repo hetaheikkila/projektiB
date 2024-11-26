@@ -1,10 +1,18 @@
 package s24.ruokasovelluss.web;
 
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import s24.ruokasovelluss.domain.UserR;
+
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
-	private final UserRepository repository;
+	private final UserR repository;
 
-	public UserDetailServiceImpl(UserRepository userRepository) {
+	public UserDetailServiceImpl(UserR userRepository) {
 		this.repository = userRepository;
 	}
 

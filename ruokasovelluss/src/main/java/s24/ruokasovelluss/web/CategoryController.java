@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.PostMapping;
 
+import s24.ruokasovelluss.domain.CategoryR;
+
 @Controller
 public class CategoryController {
 @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryR categoryRepository;
 
     @GetMapping("/categorylist")
     public String getListOfCategories(Model model) {
