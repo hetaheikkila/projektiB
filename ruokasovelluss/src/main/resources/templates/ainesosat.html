@@ -28,8 +28,8 @@
             <div>
                 <form th:object="${ainesosa}" th:action="@{/ainesosat/save}" method="post">
                     <label for="ainesosaNimi">Ainesosan nimi</label>
-                    <input type="text" id="ainesosaNimi" th:field="*{nimi}" />
-                    <div th:if="${#fields.hasErrors('nimi')}" th:errors="*{nimi}" class="text-danger"></div>
+                    <input type="text" id="ainesosaNimi" th:field="*{ainesosaNimi}" />
+                    <div th:if="${#fields.hasErrors('ainesosaNimi')}" th:errors="*{ainesosaNimi}" class="text-danger"></div>
             </div>
 
             <input type="submit" value="Save"></input>

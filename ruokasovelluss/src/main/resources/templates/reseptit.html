@@ -28,14 +28,14 @@
                 <!-- Ainesosa -->
                 <label for="ainesosa">Ainesosa</label>
                 <select id="ainesosa" th:field="*{ainesosa}">
-                    <option th:each="ainesosa : ${ainesosat}" th:value="${ainesosa.ainesosaId}" th:text="${ainesosa.nimi}"></option>
+                    <option th:each="ainesosa : ${ainesosat}" th:value="${ainesosa.ainesosaId}" th:text="${ainesosa.ainesosaNimi}"></option>
                 </select>
                 <span th:if="${#fields.hasErrors('ainesosa')}" th:errors="*{ainesosa}"></span>
 
                 <!-- Kategoria -->
                 <label for="kategoria">Kategoria</label>
                 <select id="kategoria" th:field="*{kategoria}">
-                    <option th:each="kategoria : ${kategoriat}" th:value="${kategoria.kategoriaId}" th:text="${kategoria.nimi}"></option>
+                    <option th:each="kategoria : ${kategoriat}" th:value="${kategoria.kategoriaId}" th:text="${kategoria.kategoriaNimi}"></option>
                 </select>
                 <span th:if="${#fields.hasErrors('kategoria')}" th:errors="*{kategoria}"></span>
 
@@ -66,8 +66,8 @@
                 <tbody>
                     <tr th:each="resepti : ${reseptit}">
                         <td th:text="${resepti.nimi}"></td>
-                        <td th:text="${resepti.ainesosa.nimi}"></td>
-                        <td th:text="${resepti.kategoria.nimi}"></td>
+                        <td th:text="${resepti.ainesosa.ainesosaNimi"}></td>
+                        <td th:text="${resepti.kategoria.kategoriaNimi}"></td>
                         <td th:text="${resepti.ohje}"></td>
                         <td sec:authorize="hasAuthority('ADMIN')">
                             <a class="btn btn-warning" th:href="@{/resepti/edit/{id}(id=${resepti.reseptiId})}">Muokkaa</a>
