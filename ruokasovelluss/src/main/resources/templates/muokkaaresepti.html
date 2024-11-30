@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muokkaa Resepti</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div style="padding: 5%;">
+        <h1>Reseptin tietojen muokkaus</h1>
+        <form th:object="${resepti}" th:action="@{/resepti/save}" method="post" style="display: flex; flex-direction: column; gap: 15px; max-width: 600px;">
+            <!-- Resepti ID (Hidden) -->
+            <input type="hidden" th:field="*{reseptiId}" readonly="readonly" />
+
+            <!-- Nimi -->
+            <label for="nimi">Nimi</label>
+            <input type="text" id="nimi" th:field="*{nimi}" />
+            <div class="error" th:if="${#fields.hasErrors('nimi')}" th:errors="*{nimi}"></div>
+
+            <!-- Ainesosa -->
+            <label for="ainesosa">Ainesosa</label>
+            <select id="ainesosa" th:field="*{ainesosa}">
+                <option th:each="ainesosa : ${ainesosat}" 
+                        th:value="${ainesosa.ainesosaId}" 
+                        th:text="${ainesosa.nimi}"></option>
+            </select>
+            <div class="error" th:if="${#fields.hasErrors('ainesosa')}" th:errors="*{ainesosa}"></div>
+
+            <!-- Kategoria -->
+            <label for="kategoria">Kategoria</label>
+            <select id="kategoria" th:field="*{kategoria}">
+                <option th:each="kategoria : ${kategoriat}" 
+                        th:value="${kategoria.kategoriaId}" 
+                        th:text="${kategoria.nimi}"></option>
+            </select>
+            <div class="error" th:if="${#fields.hasErrors('kategoria')}" th:errors="*{kategoria}"></div>
+
+            <!-- Ohje -->
+            <label for="ohje">Ohje</label>
+            <textarea id="ohje" th:field="*{ohje}" rows="4" cols="50"></textarea>
+            <div class="error" th:if="${#fields.hasErrors('ohje')}" th:errors="*{ohje}"></div>
+
+            <!-- Submit Button -->
+            <input type="submit" class="btn btn-success" value="Save" />
+        </form>
+        
+        <!-- Back Link -->
+        <a href="/reseptit" class="btn btn-primary" style="margin-top: 15px;">Takaisin reseptilistaukseen</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseptit</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+
+<body>
+    <div style="padding: 5%;">
+        <div style="display: flex; justify-content: flex-end;">
+            <a class="btn btn-primary" href="/index">Takaisin etusivulle</a>
+        </div>
+
+        <div>
+            <h1>Lisää Resepti</h1>
+        </div>
+
+        <div style="width: 100%;">
+            <form th:object="${resepti}" th:action="@{/resepti/save}" method="post" style="display: flex; flex-wrap: wrap; gap: 15px;">
+                <!-- Nimi -->
+                <label for="nimi">Nimi</label>
+                <input type="text" id="nimi" th:field="*{nimi}" />
+                <span th:if="${#fields.hasErrors('nimi')}" th:errors="*{nimi}"></span>
+
+                <!-- Ainesosa -->
+                <label for="ainesosa">Ainesosa</label>
+                <select id="ainesosa" th:field="*{ainesosa}">
+                    <option th:each="ainesosa : ${ainesosat}" th:value="${ainesosa.ainesosaId}" th:text="${ainesosa.nimi}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('ainesosa')}" th:errors="*{ainesosa}"></span>
+
+                <!-- Kategoria -->
+                <label for="kategoria">Kategoria</label>
+                <select id="kategoria" th:field="*{kategoria}">
+                    <option th:each="kategoria : ${kategoriat}" th:value="${kategoria.kategoriaId}" th:text="${kategoria.nimi}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('kategoria')}" th:errors="*{kategoria}"></span>
+
+                <!-- Ohje -->
+                <label for="ohje">Ohje</label>
+                <textarea id="ohje" th:field="*{ohje}" rows="4" cols="50"></textarea>
+                <span th:if="${#fields.hasErrors('ohje')}" th:errors="*{ohje}"></span>
+
+                <input type="submit" value="Save" />
+            </form>
+        </div>
+
+        <div style="padding-top: 5%;">
+            <h2>Reseptit</h2>
+        </div>
+
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nimi</th>
+                        <th>Ainesosa</th>
+                        <th>Kategoria</th>
+                        <th>Ohje</th>
+                        <th sec:authorize="hasAuthority('ADMIN')">Toiminnot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="resepti : ${reseptit}">
+                        <td th:text="${resepti.nimi}"></td>
+                        <td th:text="${resepti.ainesosa.nimi}"></td>
+                        <td th:text="${resepti.kategoria.nimi}"></td>
+                        <td th:text="${resepti.ohje}"></td>
+                        <td sec:authorize="hasAuthority('ADMIN')">
+                            <a class="btn btn-warning" th:href="@{/resepti/edit/{id}(id=${resepti.reseptiId})}">Muokkaa</a>
+                            <a class="btn btn-danger" th:href="@{/resepti/delete/{id}(id=${resepti.reseptiId})}" onclick="confirmDelete(event)">Poista</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

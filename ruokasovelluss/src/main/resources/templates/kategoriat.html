@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategoriat</title>
+
+    <script>
+        function confirmDelete(event) {
+            event.preventDefault();
+            var confirmation = confirm("Haluatko varmasti poistaa tämän kategorian?");
+            if (confirmation) {
+                window.location.href = event.target.href;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div style="padding: 5%;">
+        <div>
+            <h1>Lisää kategoria</h1>
+        </div>
+
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div>
+                <form th:object="${kategoria}" th:action="@{/kategoriat/save}" method="post">
+                    <label for="kategoriaNimi">Kategorian nimi</label>
+                    <input type="text" id="kategoriaNimi" th:field="*{nimi}" />
+                    <div th:if="${#fields.hasErrors('nimi')}" th:errors="*{nimi}" class="text-danger"></div>
+            </div>
+
+            <input type="submit" value="Save"></input>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end;">
+            <a class="btn btn-primary" href="/index">Takaisin etusivulle</a>
+        </div>
+    </div>
+
+    <div style="padding: 5%;">
+        <h2>Kategoriat</h2>
+        <table class="table table-striped" style="margin: 0 auto;">
+            <thead>
+                <tr>
+                    <th>Kategoria</th>
+                    <th>Toiminnot</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="kategoria : ${kategoriat}">
+                    <td th:text="${kategoria.nimi}"></td>
+                    <td sec:authorize="hasAuthority('ADMIN')">
+                        <a class="btn btn-danger" href="#" 
+                            th:href="@{/kategoriat/delete/{id}(id=${kategoria.kategoriaId})}" 
+                            onclick="confirmDelete(event)">Poista</a>
+                        <a class="btn btn-warning" href="#"
+                            th:href="@{/kategoriat/edit/{id}(id=${kategoria.kategoriaId})}">Muokkaa</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
