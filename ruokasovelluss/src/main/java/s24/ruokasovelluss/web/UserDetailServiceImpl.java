@@ -6,17 +6,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import s24.ruokasovelluss.domain.User;
-import s24.ruokasovelluss.domain.UserR;
+import s24.ruokasovelluss.domain.AppUser;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService  {
 	@Autowired 
-	UserR repository;
+	AppUser repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {   
-    	User curruser = repository.findByUsername(username);
+    	AppUser curruser = repository.findByUsername(username);
         UserDetails user = new org.springframework.security.core.userdetails.User(username, curruser.getPasswordHash(), 
         		AuthorityUtils.createAuthorityList(curruser.getRole()));
         return user;
