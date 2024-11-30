@@ -27,6 +27,11 @@ public class RuokasovellusController {
     private ReseptiRepository reseptiRepository;
 
     // Kategoriat Section
+    @GetMapping("/")
+    public String showIndexPage() {
+        return "index"; // This should match the filename in templates (index.html)
+    }
+
     @GetMapping("/kategoriat")
     public String listKategoriat(Model model) {
         model.addAttribute("kategoriat", kategoriaRepository.findAll());
@@ -92,11 +97,14 @@ public class RuokasovellusController {
 
     // Reseptit Section
     @GetMapping("/reseptit")
-    public String listReseptit(Model model) {
-        model.addAttribute("reseptit", reseptiRepository.findAll());
-        model.addAttribute("resepti", new Resepti());
-        return "reseptit";
-    }
+public String showReseptit(Model model) {
+    model.addAttribute("resepti", new Resepti()); // for the form
+    model.addAttribute("ainesosat", ainesosaRepository.findAll()); // List of ainesosat
+    model.addAttribute("kategoriat", kategoriaRepository.findAll()); // List of kategoriat
+    model.addAttribute("reseptit", reseptiRepository.findAll()); // List of reseptit
+    return "reseptit";
+}
+
 
     @PostMapping("/reseptit/save")
     public String saveResepti(@Valid @ModelAttribute("resepti") Resepti resepti, BindingResult result, Model model) {
