@@ -29,7 +29,7 @@ public class RuokasovellusController {
     // Kategoriat Section
     @GetMapping("/")
     public String showIndexPage() {
-        return "login"; // This should match the filename in templates (index.html)
+        return "index"; // This should match the filename in templates (index.html)
     }
 
     @GetMapping("/kategoriat")
