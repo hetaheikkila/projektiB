@@ -1,67 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ainesosat</title>
-
-    <script>
-        function confirmDelete(event) {
-            event.preventDefault();
-            var confirmation = confirm("Haluatko varmasti poistaa tämän ainesosan?");
-            if (confirmation) {
-                window.location.href = event.target.href;
-            }
-        }
-    </script>
 </head>
-
 <body>
-    <div style="padding: 5%;">
-        <div>
-            <h1>Lisää ainesosa</h1>
-        </div>
-
-        <div style="display: flex; flex-direction: row; justify-content: space-between;">
-            <div>
-                <form th:object="${ainesosa}" th:action="@{/ainesosat/save}" method="post">
-                    <label for="ainesosaNimi">Ainesosan nimi</label>
-                    <input type="text" id="ainesosaNimi" th:field="*{ainesosaNimi}" />
-                    <div th:if="${#fields.hasErrors('ainesosaNimi')}" th:errors="*{ainesosaNimi}" class="text-danger"></div>
-            </div>
-
-            <input type="submit" value="Save"></input>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end;">
-            <a class="btn btn-primary" href="/index">Takaisin etusivulle</a>
-        </div>
-    </div>
-
-    <div style="padding: 5%;">
-        <h2>Ainesosat</h2>
-        <table class="table table-striped" style="margin: 0 auto;">
-            <thead>
-                <tr>
-                    <th>Ainesosa</th>
-                    <th>Toiminnot</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="ainesosa : ${ainesosat}">
-                    <td th:text="${ainesosa.nimi}"></td>
-                    <td sec:authorize="hasAuthority('ADMIN')">
-                        <a class="btn btn-danger" href="#" 
-                            th:href="@{/ainesosat/delete/{id}(id=${ainesosa.ainesosaId})}" 
-                            onclick="confirmDelete(event)">Poista</a>
-                        <a class="btn btn-warning" href="#"
-                            th:href="@{/ainesosat/edit/{id}(id=${ainesosa.ainesosaId})}">Muokkaa</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <h1>Ainesosat tietokannasta:</h1>
+    <ul>
+        <li th:each="ainesosa : ${ainesosat}" th:text="${ainesosa.ainesosaNimi}"></li>
+    </ul>
 </body>
+<a href="/index" class="btn btn-primary">Takaisin</a>
+
 </html>

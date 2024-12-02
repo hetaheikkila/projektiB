@@ -13,6 +13,9 @@ import s24.ruokasovelluss.domain.Kategoria;
 import s24.ruokasovelluss.domain.KategoriaRepository;
 import s24.ruokasovelluss.domain.Resepti;
 import s24.ruokasovelluss.domain.ReseptiRepository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class RuokasovellusController {
@@ -26,99 +29,51 @@ public class RuokasovellusController {
     @Autowired
     private ReseptiRepository reseptiRepository;
 
-    // Kategoriat Section
-    @GetMapping("/")
-    public String showIndexPage() {
-        return "index"; // This should match the filename in templates (index.html)
+    @GetMapping("/login")
+    public String login() {
+        return "login"; // Must correspond to src/main/resources/templates/login.html
     }
 
-    @GetMapping("/kategoriat")
-    public String listKategoriat(Model model) {
-        model.addAttribute("kategoriat", kategoriaRepository.findAll());
-        model.addAttribute("kategoria", new Kategoria());
-        return "kategoriat";
+    @GetMapping("/index")
+    public String showIndex(Model model) {
+        return "index";
     }
+    
 
-    @PostMapping("/kategoriat/save")
-    public String saveKategoria(@Valid @ModelAttribute("kategoria") Kategoria kategoria, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("kategoriat", kategoriaRepository.findAll());
-            return "kategoriat";
-        }
-        kategoriaRepository.save(kategoria);
-        return "redirect:/kategoriat";
-    }
-
-    @GetMapping("/kategoriat/delete/{id}")
-    public String deleteKategoria(@PathVariable Long id) {
-        kategoriaRepository.deleteById(id);
-        return "redirect:/kategoriat";
-    }
-
-    @GetMapping("/kategoriat/edit/{id}")
-    public String editKategoria(@PathVariable Long id, Model model) {
-        Kategoria kategoria = kategoriaRepository.findById(id).orElse(null);
-        model.addAttribute("kategoria", kategoria);
-        model.addAttribute("kategoriat", kategoriaRepository.findAll());
-        return "kategoriat";
-    }
-
-    // Ainesosat Section
-    @GetMapping("/ainesosat")
-    public String listAinesosat(Model model) {
-        model.addAttribute("ainesosat", ainesosaRepository.findAll());
-        model.addAttribute("ainesosa", new Ainesosa());
-        return "ainesosat";
-    }
-
-    @PostMapping("/ainesosat/save")
-    public String saveAinesosa(@Valid @ModelAttribute("ainesosa") Ainesosa ainesosa, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("ainesosat", ainesosaRepository.findAll());
-            return "ainesosat";
-        }
-        ainesosaRepository.save(ainesosa);
-        return "redirect:/ainesosat";
-    }
-
-    @GetMapping("/ainesosat/delete/{id}")
-    public String deleteAinesosa(@PathVariable Long id) {
-        ainesosaRepository.deleteById(id);
-        return "redirect:/ainesosat";
-    }
-
-    @GetMapping("/ainesosat/edit/{id}")
-    public String editAinesosa(@PathVariable Long id, Model model) {
-        Ainesosa ainesosa = ainesosaRepository.findById(id).orElse(null);
-        model.addAttribute("ainesosa", ainesosa);
-        model.addAttribute("ainesosat", ainesosaRepository.findAll());
-        return "ainesosat";
-    }
-
-    // Reseptit Section
     @GetMapping("/reseptit")
 public String showReseptit(Model model) {
-    model.addAttribute("resepti", new Resepti()); // for the form
-    model.addAttribute("ainesosat", ainesosaRepository.findAll()); // List of ainesosat
-    model.addAttribute("kategoriat", kategoriaRepository.findAll()); // List of kategoriat
-    model.addAttribute("reseptit", reseptiRepository.findAll()); // List of reseptit
+    model.addAttribute("resepti", new Resepti()); // For form binding
+    model.addAttribute("ainesosat", ainesosaRepository.findAll()); // List of ingredients
+    model.addAttribute("kategoriat", kategoriaRepository.findAll()); // List of categories
+    model.addAttribute("reseptit", reseptiRepository.findAll()); // List of recipes
     return "reseptit";
 }
 
 
-    @PostMapping("/reseptit/save")
-    public String saveResepti(@Valid @ModelAttribute("resepti") Resepti resepti, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("reseptit", reseptiRepository.findAll());
-            return "reseptit";
-        }
-        reseptiRepository.save(resepti);
-        return "redirect:/reseptit";
-    }
+@GetMapping("/kategoriat")
+public String listKategoriat(Model model) {
+    model.addAttribute("kategoriat", kategoriaRepository.findAll());
+    return "kategoriat"; // Must match the name of the template file (kategoriat.html)
+}
 
-    @GetMapping("/reseptit/delete/{id}")
-    public String deleteResepti(@PathVariable Long id) {
-        reseptiRepository.deleteById(id);
-        return "redirect:/reseptit";
+
+    @GetMapping("/ainesosat")
+    public String listAinesosat(Model model) {
+        model.addAttribute("ainesosat", ainesosaRepository.findAll());
+        return "ainesosat";
     }
+    /*
+     * spring.application.name=ruokasovelluss
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.jpa.show-sql=true
+server.port=8080
+
+<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <scope>runtime</scope>
+</dependency>
+     */
 }

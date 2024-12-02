@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import s24.ruokasovelluss.domain.Kategoria;
 import s24.ruokasovelluss.domain.KategoriaRepository;
@@ -15,6 +16,7 @@ import s24.ruokasovelluss.domain.AppUser;
 import s24.ruokasovelluss.domain.AppUserRepository;
 
 import java.util.Arrays;
+
 
 @SpringBootApplication
 public class RuokasovellussApplication {
@@ -51,11 +53,14 @@ public class RuokasovellussApplication {
 
             reseptiRepository.saveAll(Arrays.asList(pancakeRecipe, chickenStirFry));
 
-            // Create default users
-            AppUser user1 = new AppUser("user", "$2a$06$3jYRJrg0ghaaypjZ/.g4SethoeA51ph3UD4kZi9oPkeMTpjKU5uo6", "USER");
-            AppUser user2 = new AppUser("admin", "$2a$10$0MMwY.IQqpsVc1jC8u7IJ.2rT8b0Cd3b3sfIBGV2zfgnPGtT4r0.C", "ADMIN");
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-            userRepository.saveAll(Arrays.asList(user1, user2));
+        // Create default users with encoded passwords
+        AppUser user1 = new AppUser("user", encoder.encode("password"), "USER");
+        AppUser user2 = new AppUser("admin", encoder.encode("admin"), "ADMIN");
+
+        userRepository.saveAll(Arrays.asList(user1, user2));
+        System.out.println("Users created with encoded passwords!");
 
             System.out.println("Data initialized!");
         };
